@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <SlidingDrawer
+        android:id="@+id/drawer1"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:content="@+id/content"
+        android:handle="@+id/handle"
+        android:orientation="horizontal"
+        >
+        <!--设置引导按钮-->
+        <LinearLayout
+            android:id="@+id/handle"
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:layout_width="35dp"
+                android:layout_height="201dp"
+                android:gravity="center"
+                android:text="日志展示"
+                android:textSize="20dp"
+                android:textColor="#FFFFFF"
+                android:background="#60B2D9"/>
+        </LinearLayout>
+        <!--设置抽屉内容-->
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:id="@+id/clear_image_view_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#269AFF9A">
+                <ImageView
+                    android:id="@+id/clear_image_view"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:src="@drawable/clear"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+            <ListView
+                android:id="@+id/log_list_view"
+                android:transcriptMode="disabled"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@id/clear_image_view_layout"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:divider="#0000"
+                android:fadingEdge="none"
+                android:overScrollMode="never"
+                android:dividerHeight="1dp"
+                android:scrollbars="none"
+                android:background="#269AFF9A">
+            </ListView>
+        </RelativeLayout>
+
+    </SlidingDrawer>
+</RelativeLayout>
+
