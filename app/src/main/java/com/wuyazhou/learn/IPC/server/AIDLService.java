@@ -7,12 +7,22 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
 import com.wuyazhou.learn.IPC.aidl.Book;
+import com.wuyazhou.learn.IPC.aidl.ICallback;
 import com.wuyazhou.learn.IPC.aidl.IOnNewBookArrivedListener;
 import com.wuyazhou.learn.IPC.aidl.IService;
 
 
 public class AIDLService extends Service {
     RemoteCallbackList<IOnNewBookArrivedListener> mRemoteCallbackList = new RemoteCallbackList<IOnNewBookArrivedListener>();
+
+
+    public AIDLService() {
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
     private final IService.Stub mBinder = new IService.Stub() {
         @Override
         public String hello(String name) throws RemoteException {
@@ -24,6 +34,11 @@ public class AIDLService extends Service {
         public Book addBook() throws RemoteException {
             onNewBookArrived(new Book(123,"艺术探索"));
             return new Book(123,"艺术探索");
+        }
+
+        @Override
+        public void useCallback(ICallback callback) throws RemoteException {
+            callback.callback(new Book(456,"Android进阶"));
         }
 
         /** 添加监听*/
@@ -44,15 +59,6 @@ public class AIDLService extends Service {
             mRemoteCallbackList.finishBroadcast();
         }
     };
-
-    public AIDLService() {
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);

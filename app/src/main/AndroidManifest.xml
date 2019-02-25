@@ -17,8 +17,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".server.AIDLService"
-            android:process=":test">
+            android:process=":aidl">
+            <intent-filter>
+                <action android:name="android.intent.action.AIDLService" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".server.MessengerService"
+            android:process=":messenger">
             <intent-filter>
                 <action android:name="android.intent.action.AIDLService" />
             </intent-filter>

@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.wuyazhou.learn.IPC.R;
 import com.wuyazhou.learn.IPC.aidl.Book;
+import com.wuyazhou.learn.IPC.aidl.ICallback;
 import com.wuyazhou.learn.IPC.aidl.IOnNewBookArrivedListener;
 import com.wuyazhou.learn.IPC.aidl.IService;
 import com.wuyazhou.learn.IPC.server.AIDLService;
@@ -39,18 +40,19 @@ public class AIDLTestPagerView extends FrameLayout implements View.OnClickListen
             }
             mRemoteService.asBinder().unlinkToDeath(mDeathRecipient,0);
             mRemoteService = null;
+            // TODO: 做重新绑定service服务，或者其他的操作
         }
     };
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
-        public void onServiceConnected(ComponentName componentName, IBinder clientBinder) {
-            mRemoteService = IService.Stub.asInterface(clientBinder);
-
+        public void onServiceConnected(ComponentName componentName, IBinder serverBinder) {
+            mRemoteService = IService.Stub.asInterface(serverBinder);
 
             try {
                 mRemoteService.registerListener(mOnNewBookArrivedListener);
-                clientBinder.linkToDeath(mDeathRecipient,0);
+                //给binder设置死亡代理
+                serverBinder.linkToDeath(mDeathRecipient,0);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -69,6 +71,12 @@ public class AIDLTestPagerView extends FrameLayout implements View.OnClickListen
         }
     };
 
+    private ICallback mCallback = new ICallback.Stub() {
+        @Override
+        public void callback(Book newBook) throws RemoteException {
+            Log.d("wuyazhouAIDL","回调："+newBook.bookName);
+        }
+    };
     public AIDLTestPagerView(Context context) {
         super(context);
         mContext = context;
@@ -99,10 +107,12 @@ public class AIDLTestPagerView extends FrameLayout implements View.OnClickListen
 
         addView(mLayout);
 
-        View modelFirst  = mLayout.findViewById(com.wuyazhou.pagerview.R.id.model_button_1);
+        View modelFirst  = mLayout.findViewById(R.id.model_button_1);
         modelFirst.setOnClickListener(this);
-        View modelSecond  = mLayout.findViewById(com.wuyazhou.pagerview.R.id.model_button_2);
+        View modelSecond  = mLayout.findViewById(R.id.model_button_2);
         modelSecond.setOnClickListener(this);
+        View modelThird  = mLayout.findViewById(R.id.model_button_3);
+        modelThird.setOnClickListener(this);
     }
 
     /**
@@ -125,9 +135,12 @@ public class AIDLTestPagerView extends FrameLayout implements View.OnClickListen
             } else if (i == R.id.model_button_2) {
                 Book book = mRemoteService.addBook();
                 LogShowUtil.addLog("Client", "获取到的书籍:"+book.bookName);
-            } else {
+            } else if (i == R.id.model_button_3) {
+                mRemoteService.useCallback(mCallback);
+            }else {
 
             }
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }

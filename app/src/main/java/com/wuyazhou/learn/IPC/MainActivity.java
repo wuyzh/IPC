@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.wuyazhou.learn.IPC.AIDLTest.AIDLTestPagerView;
+import com.wuyazhou.learn.IPC.AIDLTest.MessengerTestPagerView;
 import com.wuyazhou.learn.logview.LogShowView;
 import com.wuyazhou.pagerview.ModelPagerView;
 import com.wuyazhou.pagerview.ViewPagerAdapter;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private LogShowView mShowLogView = null;
 
     private AIDLTestPagerView mAIDLTestPagerView = null;
+    private MessengerTestPagerView mMessengerTestPagerView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(mViewPagerAdapter);
         mAIDLTestPagerView = new AIDLTestPagerView(this);
         addViewPagerView("AIDL",mAIDLTestPagerView);
+
+        mMessengerTestPagerView = new MessengerTestPagerView(this);
+        addViewPagerView("Messenger",mMessengerTestPagerView);
+
         addViewPagerView("标题二",new ModelPagerView(this));
         mViewPagerAdapter.notifyDataSetChanged();
     }
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mAIDLTestPagerView.release();
+        mMessengerTestPagerView.release();
         mViews.clear();
         mViews = null;
         mShowLogView.release();

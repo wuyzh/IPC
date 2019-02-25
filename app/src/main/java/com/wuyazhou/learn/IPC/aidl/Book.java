@@ -16,26 +16,20 @@ public class Book implements Parcelable {
         this.bookName = bookName;
     }
 
-    /**
-     * 序列化
-     * */
+    /** 序列化*/
     @Override
     public void writeToParcel(Parcel out, int i) {
         out.writeInt(bookId);
         out.writeString(bookName);
     }
 
-    /**
-     * 内容描述功能
-     * */
+    /** 内容描述功能*/
     @Override
     public int describeContents() {
         return 0;
     }
 
-    /**
-     * 反序列化
-     */
+    /** 反序列化*/
     public static final Creator<Book> CREATOR = new Creator<Book>() {
         @Override
         public Book createFromParcel(Parcel in) {
@@ -47,8 +41,6 @@ public class Book implements Parcelable {
             return new Book[size];
         }
     };
-
-
 
     protected Book(Parcel in) {
         bookId = in.readInt();
